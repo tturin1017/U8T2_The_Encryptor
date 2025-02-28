@@ -8,45 +8,77 @@ public class TestEncryptor{
     public void testDetermineColumns_ExactMultiple() {
         // Test case where message length is an exact multiple of rows
         int rows = 5;
-        String message = "HelloWorld"; // length = 10
         int expectedColumns = 2; // 10 / 5 = 2
-        assertEquals(expectedColumns, Encryptor.determineColumns(message, rows));
+        assertEquals(expectedColumns, Encryptor.determineColumns(10, rows));
+    }
+
+    @Test
+    public void testGenerateEncryptArray_NeedsPadding() {
+        // Test case where message needs padding with "="
+        String message = "HELLO";
+        int rows = 3;
+        String[][] expected = {
+            {"H", "E"},
+            {"L", "L"},
+            {"O", "="}
+        };
+        assertArrayEquals(expected, Encryptor.generateEncryptArray(message, rows));
+    }
+
+    @Test
+    public void testGenerateEncryptArray_EmptyMessage() {
+        // Test case with an empty message
+        String message = "";
+        int rows = 2;
+        String[][] expected = {
+            {"="},
+            {"="}
+        };
+        assertArrayEquals(expected, Encryptor.generateEncryptArray(message, rows));
     }
 
     @Test
     public void testDetermineColumns_NotExactMultiple() {
         // Test case where message length is not an exact multiple of rows
         int rows = 4;
-        String message = "HelloWorld"; // length = 10
         int expectedColumns = 3; // 10 / 4 = 2.5 -> rounded up to 3
-        assertEquals(expectedColumns, Encryptor.determineColumns(message, rows));
+        assertEquals(expectedColumns, Encryptor.determineColumns(10, rows));
     }
 
     @Test
     public void testDetermineColumns_EmptyMessage() {
         // Test case with an empty message
         int rows = 3;
-        String message = ""; // length = 0
-        int expectedColumns = 0; // 0 / 3 = 0
-        assertEquals(expectedColumns, Encryptor.determineColumns(message, rows));
+        int expectedColumns = 0; 
+        assertEquals(expectedColumns, Encryptor.determineColumns(0, rows));
     }
 
     @Test
     public void testDetermineColumns_MessageLengthLessThanRows() {
         // Test case where message length is less than rows
         int rows = 10;
-        String message = "Hello"; // length = 5
         int expectedColumns = 1; // 5 / 10 = 0.5 -> rounded up to 1
-        assertEquals(expectedColumns, Encryptor.determineColumns(message, rows));
+        assertEquals(expectedColumns, Encryptor.determineColumns(5, rows));
     }
 
     @Test
     public void testDetermineColumns_MessageLengthOne() {
         // Test case where message length is 1
         int rows = 3;
-        String message = "H"; // length = 1
         int expectedColumns = 1; 
-        assertEquals(expectedColumns, Encryptor.determineColumns(message, rows));
+        assertEquals(expectedColumns, Encryptor.determineColumns(1, rows));
+    }
+
+    @Test
+    public void testGenerateEncryptArray_ExactFit() {
+        // Test case where message fits exactly into the 2D array
+        String message = "HELLOWORLD";
+        int rows = 2;
+        String[][] expected = {
+            {"H", "E", "L", "L", "O"},
+            {"W", "O", "R", "L", "D"}
+        };
+        assertArrayEquals(expected, Encryptor.generateEncryptArray(message, rows));
     }
 
     @Test

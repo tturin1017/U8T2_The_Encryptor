@@ -2,9 +2,9 @@ package com.example.project;
 import java.util.ArrayList;
 
 public class Encryptor {
+    
+    public static int determineColumns(int messageLen, int rows){
 
-    public static int determineColumns(String message, int rows){
-        int messageLen = message.length();
         int columns;
         // calculate correct number of columns based on message length
         if (messageLen % rows == 0) {
@@ -16,10 +16,10 @@ public class Encryptor {
         return columns;
     }
     
-    public static String encryptMessage(String message, int rows) {
-        int columns = determineColumns(message, rows);
+    public static String[][] generateEncryptArray(String message, int rows) {
         int messageLen = message.length();
-       
+        int columns = determineColumns(messageLen, rows);
+        
         String[][] encryptor = new String[rows][columns];
 
         // fill 2D array with characters, padding any empty elements with "="
@@ -36,7 +36,12 @@ public class Encryptor {
             }
         }
 
+        return encryptor;
+    }
+
+    public static String encryptMessage(String message, int rows){
         // pull out characters by column going in reverse (right to left)
+        String [][] encryptor = generateEncryptArray(message, rows);
         String encryptedMsg = "";
         for (int col = encryptor[0].length - 1; col >= 0; col--) {
             for (int row = 0; row < encryptor.length; row++) {
