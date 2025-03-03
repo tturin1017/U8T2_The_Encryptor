@@ -1,18 +1,21 @@
 package com.example.project;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Encryptor {
     
     public static int determineColumns(int messageLen, int rows){
-
         int columns;
         // calculate correct number of columns based on message length
+        if(messageLen==0){
+            return 1;
+        }
         if (messageLen % rows == 0) {
             columns = messageLen / rows;
         } else {
             columns = messageLen / rows + 1;
         }
-
+        
         return columns;
     }
     
@@ -88,5 +91,13 @@ public class Encryptor {
             i--;
         }
         return decryptedMsg;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Testing");
+       String[][] arr = generateEncryptArray("", 2);
+        System.out.println(Arrays.deepToString(arr));
+
+  
     }
 }
